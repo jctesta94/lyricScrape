@@ -3,7 +3,7 @@
 library(tidyverse)
 library(rvest)
 
-raw <- read_html('https://www.azlyrics.com/lyrics/tool.html')
+raw <- read_html('https://www.azlyrics.com/lyrics/shakeygraves/rollthebones.html')
 
 # ##
 # Scrape all artists from main page, store
