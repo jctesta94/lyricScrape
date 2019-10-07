@@ -3,7 +3,14 @@
 library(tidyverse)
 library(rvest)
 
-raw <- read_html('https://www.azlyrics.com/lyrics/shakeygraves/rollthebones.html')
+hits <- 1
+for(i in 1:hits) {
+  raw <- read_html('https://www.azlyrics.com/lyrics/shakeygraves/rollthebones.html')
+}
+
+
+
+
 
 # ##
 # Scrape all artists from main page, store
@@ -30,8 +37,6 @@ main$sorted <- main$rawST %>%
   na.omit() %>% 
   #(-rawST) %>% 
   str_remove_all("([(),])")
-  
-  
   
   
 rawST
