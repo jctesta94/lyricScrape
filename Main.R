@@ -36,7 +36,12 @@ main <- as.data.frame(rawST) %>%
 main$sorted <- main$rawST %>% 
   na.omit() %>% 
   #(-rawST) %>% 
-  str_remove_all("([(),])")
+  str_remove_all("([(),])") %>% 
+  str_to_lower()
+
+main %>% 
+  select(-rawST) %>% 
+  str_remove_all(")
 
 
 rawST
