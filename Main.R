@@ -1,47 +1,75 @@
-## This code is writen for practice use only
+## !!This code is writen for practice use only!! ##
 
 library(tidyverse)
 library(rvest)
 
 hits <- 1
 for(i in 1:hits) {
-  raw <- read_html('https://www.azlyrics.com/lyrics/shakeygraves/rollthebones.html')
+  raw <- read_html('https://www.azlyrics.com/t/tompettyandtheheartbreakers.html')
 }
 
 
-
+#https://www.azlyrics.com/lyrics/dermotkennedy/whathaveidone.html
 
 
 # ##
-# Scrape all artists from main page, store
-# loop through list and scrape all album and song pairings, store
+# Scrape all artists from mainSS page, store.
+# loop through list and scrape all album and song pairings, store.
 #   will store as accessable album song pair?
-# loop through list and pull lyrics for all songs, store
+# loop through list and pull lyrics for all songs, store.
 # all words and letters will be parsed and tallied
 # create visuals for data
 # !Set limiter on this chunk before running, for good measure
 # ##
 
+rawSongList <- raw %>% 
+  html_nodes("#listAlbum") %>%
+  html_text() %>% 
+  strsplit(split = "\n") %>% 
+  unlist()
+
+rawSongText <- rawSongList[which(substr(rawSongList, 0, 3) == "{s:")]
+
+rawSongText <- rawSongText %>% 
+  substr(0, nchar(rawSongText) - 15)
+
+rawSongTextDF <- data.frame(rawSongText)
+
+rawURL <- rawSongTextDF %>%
+  separate(rawSongText, into = c(NA, "url"), sep = "h:")
+
+rawURL$url <- rawURL$url %>% 
+  substr(4,nchar(rawURL$url))
+
+cleanURL <- paste0("https://www.azlyrics.com", rawURL$url)
+
+
+cleanURL
+
+
+## Single Song grab
+####################################################################################
 rawST <- raw %>% 
   html_node(xpath = "//html//body//div[5]") %>%  #//div//div[2]//div[5]//text()[1]")
   html_text()
 
+rawST <- substr(rawST, 5, nchar(rawST))
+
 rawST <- str_replace_all(rawST, "[\r\n]", " ")
 
 
-main <- as.data.frame(rawST) %>% 
+mainSS <- as.data.frame(rawST) %>% 
   mutate(rawST = strsplit(as.character(rawST), " ")) %>% 
   unnest(rawST)
 
-main$sorted <- main$rawST %>% 
+mainSS$sorted <- mainSS$rawST %>% 
   na.omit() %>% 
   #(-rawST) %>% 
   str_remove_all("([(),])") %>% 
   str_to_lower()
 
-main %>% 
-  select(-rawST) %>% 
-  str_remove_all(")
+mainSS %>% 
+  select(-rawST) #%>% str_remove_all()
 
+##################################################################################################
 
-rawST
