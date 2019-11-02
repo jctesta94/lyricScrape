@@ -1,17 +1,5 @@
 ## !!This code is writen for practice use only!! ##
 
-library(tidyverse)
-library(rvest)
-
-hits <- 1
-for(i in 1:hits) {
-  raw <- read_html('https://www.azlyrics.com/t/tompettyandtheheartbreakers.html')
-}
-
-
-#https://www.azlyrics.com/lyrics/dermotkennedy/whathaveidone.html
-
-
 # ##
 # Scrape all artists from mainSS page, store.
 # loop through list and scrape all album and song pairings, store.
@@ -21,6 +9,20 @@ for(i in 1:hits) {
 # create visuals for data
 # !Set limiter on this chunk before running, for good measure
 # ##
+
+#loops through all URLs and checks if error out, if error record it and at end pring out precentage of success v failures
+
+
+library(tidyverse)
+library(rvest)
+
+#Input: Desired Artist
+#Output: DF of URLs for all songs
+#######################################################################################
+hits <- 1
+for(i in 1:hits) {
+  raw <- read_html('https://www.azlyrics.com/h/hobojohnson.html')
+}
 
 rawSongList <- raw %>% 
   html_nodes("#listAlbum") %>%
@@ -43,8 +45,21 @@ rawURL$url <- rawURL$url %>%
 
 cleanURL <- paste0("https://www.azlyrics.com", rawURL$url)
 
+cleanURL[length(cleanURL)] <- substr(cleanURL[length(cleanURL)], 0, nchar(cleanURL[length(cleanURL)]) - 2) 
 
 cleanURL
+
+
+#Input: DF of clean URLs
+#Output: ?? of scraped text
+###################################################################################
+rawScrape <- data.frame()
+
+
+for(i in 1: nrow(cleanURL)) {
+  rawScrape[i] <- read_ho
+}
+
 
 
 ## Single Song grab
