@@ -1,5 +1,5 @@
-## !!This code is writen for practice use only!! ##
 
+## !!This code is writen for practice use only!! ##
 # ##
 # Scrape all artists from mainSS page, store.
 # loop through list and scrape all album and song pairings, store.
@@ -93,4 +93,3 @@ mainSS %>%
   select(-rawST) #%>% str_remove_all()
 
 ##################################################################################################
-
