@@ -11,6 +11,7 @@
 # ##
 
 #loops through all URLs and checks if error out, if error record it and at end pring out precentage of success v failures
+#possibly 
 
 
 library(tidyverse)
@@ -47,18 +48,23 @@ cleanURL <- paste0("https://www.azlyrics.com", rawURL$url)
 
 cleanURL[length(cleanURL)] <- substr(cleanURL[length(cleanURL)], 0, nchar(cleanURL[length(cleanURL)]) - 2) 
 
-cleanURL
-
 
 #Input: DF of clean URLs
 #Output: ?? of scraped text
 ###################################################################################
-rawScrape <- data.frame()
+rawScrape <- c()
 
 
-for(i in 1: nrow(cleanURL)) {
-  rawScrape[i] <- read_ho
+
+for(i in 1: ) {
+  print(read_html(cleanURL[1])[1])
+  
+  
+  
+  #append(rawScrape, read_html(cleanURL[i]), after = 3) 
 }
+
+rawScrape
 
 
 
