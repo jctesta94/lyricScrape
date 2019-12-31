@@ -1,5 +1,7 @@
 
 ## !!This code is writen for practice use only!! ##
+
+
 # ##
 # Scrape all artists from mainSS page, store.
 # loop through list and scrape all album and song pairings, store.
@@ -21,9 +23,9 @@ library(rvest)
 #Output: DF of URLs for all songs
 #######################################################################################
 hits <- 1
-for(i in 1:hits) {
-  raw <- read_html('https://www.azlyrics.com/h/hobojohnson.html')
-}
+
+
+raw <- read_html('https://www.azlyrics.com/d/drake.html')
 
 rawSongList <- raw %>% 
   html_nodes("#listAlbum") %>%
@@ -52,24 +54,26 @@ cleanURL[length(cleanURL)] <- substr(cleanURL[length(cleanURL)], 0, nchar(cleanU
 #Input: DF of clean URLs
 #Output: ?? of scraped text
 ###################################################################################
-rawScrape <- c()
+#rawScrape <- c()
 
 
 
-for(i in 1: ) {
-  print(read_html(cleanURL[1])[1])
-  
-  
-  
-  #append(rawScrape, read_html(cleanURL[i]), after = 3) 
-}
-
-rawScrape
+#for(i in 1: ) {
+#print(read_html(cleanURL[1])[1])
 
 
+
+#append(rawScrape, read_html(cleanURL[i]), after = 3) 
+#}
+
+#rawScrape
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
 
 ## Single Song grab
 ####################################################################################
+raw <- read_html('https://www.azlyrics.com/lyrics/drake/war.html')
+
 rawST <- raw %>% 
   html_node(xpath = "//html//body//div[5]") %>%  #//div//div[2]//div[5]//text()[1]")
   html_text()
@@ -87,9 +91,27 @@ mainSS$sorted <- mainSS$rawST %>%
   na.omit() %>% 
   #(-rawST) %>% 
   str_remove_all("([(),])") %>% 
+  str_remove_all("'") %>%
   str_to_lower()
 
-mainSS %>% 
+mainSS <- mainSS %>% 
   select(-rawST) #%>% str_remove_all()
 
+
+## Word Count
 ##################################################################################################
+#Could also look for how many times words are duplicated across songs
+
+#For now this function will work for a single song pass.
+# When connecting all sections, this willl need to become a dictonary that is built and added to from every song. 
+
+masterCountList[c("Word", "Count", "Instances")]
+
+cleanWords <- as.vector(mainSS[,1])
+
+holdList2 <- data.frame(count(mainSS, vars = cleanWords))
+holdList2["TEMP"] <- NA
+names(holdList2) <- c("Word", "Count", "Instances")
+
+dupes <- data.frame(inner_join(holdList, masterCountList, by = "Word"))
+
