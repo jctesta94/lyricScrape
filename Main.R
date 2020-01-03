@@ -19,11 +19,10 @@
 library(tidyverse)
 library(rvest)
 
-masterCountList <- data.frame(NA, NA, NA)
-names(masterCountList) <- c("Word", "Count", "Instances")
+firstRun <- FALSE
 
-wlPass <- song_grab('https://www.azlyrics.com/lyrics/drake/tuscanleather.html')
-dupPass <- get_dupes(wlPass)
+wlPass <- song_grab('https://www.azlyrics.com/lyrics/drake/war.html')
+dupePass <- get_dupes(wlPass, firstRun)
 
 #######################################################################################
 
@@ -121,16 +120,26 @@ return(mainSS)
 #For now this function will work for a single song pass.
 # When connecting all sections, this willl need to become a dictonary that is built and added to from every song. 
 
-get_dupes <- function(wordList)
-{
+get_dupes <- function(wordList, fRun)
+{ 
   cleanWords <- as.vector(wordList[,1])
-
+  
   holdList <- data.frame(count(wordList, vars = cleanWords))
   holdList["TEMP"] <- 1
   names(holdList) <- c("Word", "Count", "Instances")
-  dupes <- data.frame(inner_join(holdList, masterCountList, by = "Word"))
   
-  return(dupes)
+  if(fRun == TRUE) {
+    masterCountList <- data.frame("hold", NA, NA)
+    names(masterCountList) <- c("Word", "Count", "Instances")
+    
+    masterCountList <- holdList
+  }
+  
+  if(fRun == FALSE) {
+    dupes <- data.frame(inner_join(holdList, masterCountList, by = "Word"))
+  }
+  
+  #return(dupes)
 }
 
 
